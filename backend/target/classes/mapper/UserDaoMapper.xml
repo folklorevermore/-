@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xaufe.dao.UserDao"> <!--扫描到的包路径-->
+    <!--查询所有管理员-->
+
+    <!--通过uid查询管理员信息-->
+    <select id="selectUserByUid" resultType="cn.edu.xaufe.entity.User" parameterType="int">
+        select * from user where uid = #{uid}
+    </select>
+    <!--通过userName模糊查询管理员信息-->
+    <select id="selectUserByUserName" resultType="cn.edu.xaufe.entity.User" parameterType="string">
+        select * from user where userName like CONCAT('%',#{userName},'%')
+    </select>
+    <!--新增一个停车管理员-->
+    <insert id="addUser" parameterType="cn.edu.xaufe.entity.User">
+         insert into user(uid, userName, role, password) values (#{uid}, #{userName}, 0, #{password})
+    </insert>
+    <!--更新停车管理员信息-->
+    <update id="updateUser" parameterType="cn.edu.xaufe.entity.User">
+         update user set uid = #{uid}, userName = #{userName}, password = #{password} where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xaufe.dao.CarDao"> <!--扫描到的包路径-->
+
+    <!--通过车牌号plate查询车辆信息-->
+    <select id="selectCarByPlate" resultType="cn.edu.xaufe.entity.Car" parameterType="string">
+        select * from car where plate = #{plate}
+    </select>
+
+    <!--通过车位号carport查询车辆信息-->
+    <select id="selectCarByCarport" resultType="cn.edu.xaufe.entity.Car" parameterType="string">
+        select * from car where carport = #{carport}
+    </select>
+
+    <!--通过车主姓名ownerName查询一个/多个车辆信息-->
+    <select id="selectCarByOwnerName" resultType="cn.edu.xaufe.entity.Car" parameterType="string">
+        select * from car where ownerName = #{ownerName}
+    </select>
+
+    <!--通过车主联系电话ownerPhone查询一个/多个车辆信息-->
+    <select id="selectCarByOwnerPhone" resultType="cn.edu.xaufe.entity.Car" parameterType="string">
+        select * from car where ownerPhone = #{ownerPhone}
+    </select>
+
+    <!--查询所有车辆信息-->
+    <select id="findAllCar" resultType="cn.edu.xaufe.entity.Car">
+        select * from car
+    </select>
+
+    <!--通过车辆类型（永久1/临停0）查询一个/多个车辆信息-->
+    <select id="selectCarByType" resultType="cn.edu.xaufe.entity.Car">
+        select * from car where type = #{type}
+    </select>
+
+    <!--新增一个车辆信息-->
+    <insert id="addCar" parameterType="cn.edu.xaufe.entity.Car">
+        insert into car(plate, carport, type, ownerName, ownerPhone)
+        values (#{plate}, #{carport}, #{type}, #{ownerName}, #{ownerPhone})
+    </insert>
+
+    <!--修改一个车辆信息-->
+    <update id="updateCar" parameterType="cn.edu.xaufe.entity.Car">
+        UPDATE car SET
+        plate = #{plate},
+        carport = #{carport},
+        type = #{type},
+        ownerName = #{ownerName},
+        ownerPhone = #{ownerPhone}
+        WHERE id = #{id};
+    </update>
+
+
+</mapper>

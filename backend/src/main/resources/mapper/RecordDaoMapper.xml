@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xaufe.dao.RecordDao"> <!--扫描到的包路径-->
+
+    <!--Mybatis一对多的关系映射，停车记录record中封装car车辆信息，便于在查询停车记录时同时查询到该车辆信息-->
+    <resultMap id="recordCarMap" type="cn.edu.xaufe.entity.Record">
+        <id property="id" column="id"/>
+        <result property="rid" column="rid"/>
+        <result property="cid" column="cid"/>
+        <result property="type" column="type"/>
+        <result property="inTime" column="inTime"/>
+        <result property="outTime" column="outTime"/>
+        <result property="charge" column="charge"/>
+        <collection property="car" ofType="cn.edu.xaufe.entity.Car">
+            <id column="cid" property="id"/>
+            <result column="plate" property="plate"/>
+            <result column="carport" property="carport"/>
+            <result column="type" property="type"/>
+            <result column="ownerName" property="ownerName"/>
+            <result column="ownerPhone" property="ownerPhone"/>
+        </collection>
+    </resultMap>
+
+    <!--查询所有停车记录，同时通过停车记录的车辆id查询车辆信息-->
+    <select id="findAllRecord" resultMap="recordCarMap">
+        select * from record, car where record.cid = car.id
+    </select>
+
+    <!--通过车牌号plate查询一条/多条停车记录-->
+    <select id="selectRecordByPlate" resultMap="recordCarMap">
+        select * from record, car where car.id = record.cid AND plate = #{plate}
+    </select>
+
+    <!--通过停车记录编号rid查询一条停车记录-->
+    <select id="selectRecordByRid" resultMap="recordCarMap">
+        select * from record, car where car.id = record.cid AND rid = #{rid}
+    </select>
+
+    <!--通过车辆车位号carport来查询一条/多条停车记录-->
+    <select id="selectRecordByCarport" resultMap="recordCarMap">
+        select * from record, car where car.id = record.cid AND carport = #{carport}
+    </select>
+
+    <!--通过停车记录类型（永久1/临停0）查询一条/多条停车记录-->
+    <select id="selectRecordByType" resultMap="recordCarMap">
+        select * from record, car where car.id = record.cid AND record.type = #{type}
+    </select>
+
+    <!--新增一条停车记录-->
+    <insert id="addRecord" parameterType="cn.edu.xaufe.entity.Record">
+        insert into record(rid, cid, type, inTime, outTime, charge)
+        values (#{rid}, #{cid}, #{type}, #{inTime}, #{outTime}, #{charge})
+    </insert>
+
+    <!--修改一条停车记录-->
+    <update id="updateRecord" parameterType="cn.edu.xaufe.entity.Record">
+        UPDATE record SET
+        rid = #{rid},
+        cid = #{cid},
+        type = #{type},
+        inTime = #{inTime},
+        outTime = #{outTime},
+        charge = #{charge}
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>
